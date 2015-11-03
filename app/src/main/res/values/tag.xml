@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="frameLayoutHeader">frameLayoutHeader</string>
+    <string name="pagerSlidingTabStrip">pagerSlidingTabStrip</string>
+    <string name="viewPager">viewPager</string>
+    <string name="stickyChildView">stickyChildView</string>
+</resources>
