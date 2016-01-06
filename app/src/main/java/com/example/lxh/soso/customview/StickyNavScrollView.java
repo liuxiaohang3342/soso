@@ -1,4 +1,4 @@
-package com.example.lxh.soso;
+package com.example.lxh.soso.customview;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -15,6 +15,8 @@ import android.webkit.WebView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
+
+import com.example.lxh.soso.R;
 
 /**
  * @author Administrator
@@ -225,24 +227,6 @@ public class StickyNavScrollView extends ScrollView {
             }
         }
 
-    }
-
-    public interface StickyNavScrollViewScrollListener {
-        void onScrollChanged(int l, int t, int oldl, int oldt);
-    }
-
-    private StickyNavScrollViewScrollListener mScrollListener;
-
-    public void setOnScrollListener(StickyNavScrollViewScrollListener listener) {
-        this.mScrollListener = listener;
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        if (mScrollListener != null) {
-            mScrollListener.onScrollChanged(l, t, oldl, oldt);
-        }
     }
 
 }

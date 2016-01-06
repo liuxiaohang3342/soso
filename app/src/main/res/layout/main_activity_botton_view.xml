@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    android:background="@color/home_bottom_button"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/home_main"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="主页" />
+
+    <RadioButton
+        android:id="@+id/home_list"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="列表" />
+
+    <RadioButton
+        android:id="@+id/home_scroll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="滑动" />
+
+    <RadioButton
+        android:id="@+id/home_personal"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="个人" />
+
+</RadioGroup>
