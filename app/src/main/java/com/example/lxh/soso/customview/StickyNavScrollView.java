@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -44,8 +45,6 @@ public class StickyNavScrollView extends ScrollView {
 
     private ViewGroup mInnerScrollView;
 
-    private View mTop;
-
 
     public StickyNavScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -82,6 +81,7 @@ public class StickyNavScrollView extends ScrollView {
         if (mPagerTabStrip != null) {
             height += mPagerTabStrip.getMeasuredHeight();
         }
+        Log.i("lxh","getMeasuredHeight()"+getMeasuredHeight());
         params.height = getMeasuredHeight() - height;
     }
 
@@ -154,79 +154,4 @@ public class StickyNavScrollView extends ScrollView {
             }
         }
     }
-
-
-    /**
-     * 空实现，防止自动滚动
-     */
-    @Override
-    public void requestChildFocus(View child, View focused) {
-    }
-
-    /**
-     * @param @return
-     * @return boolean
-     * @MethodName: isChildViewTop
-     * @Description: 判断viewpager中tab是否在顶部
-     * @author Administrator
-     */
-    public boolean isChildViewTop() {
-        getCurrentScrollView();
-        boolean isChildTop = true;
-        if (mInnerScrollView != null) {
-            if (mInnerScrollView instanceof ListView) {
-                ListView lv = (ListView) mInnerScrollView;
-                View c = lv.getChildAt(0);
-                if (c != null) {
-                    isChildTop = (c.getTop() == 0);
-                }
-            } else if (mInnerScrollView instanceof GridView) {
-                GridView gridView = (GridView) mInnerScrollView;
-                View c = gridView.getChildAt(0);
-                if (c != null) {
-                    isChildTop = (c.getTop() == 0);
-                }
-            } else if (mInnerScrollView instanceof WebView) {
-                WebView webview = (WebView) mInnerScrollView;
-                isChildTop = (webview.getScrollY() == 0);
-            } else if (mInnerScrollView instanceof ScrollView) {
-                ScrollView scrollview = (ScrollView) mInnerScrollView;
-                isChildTop = (scrollview.getScrollY() == 0);
-            }
-        }
-        return isChildTop;
-    }
-
-    /**
-     * @author Administrator
-     * @ClassName: ToTopListener
-     * @Description: 处理回到顶部的事件
-     * @date 2015-5-14 下午8:46:57
-     */
-    private class ToTopListener implements OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            mTop.setVisibility(View.INVISIBLE);
-            if (isChildViewTop()) {
-                smoothScrollTo(0, 0);
-            } else {
-                if (mInnerScrollView instanceof ListView) {
-                    ListView lv = (ListView) mInnerScrollView;
-                    lv.setSelection(0);
-                } else if (mInnerScrollView instanceof GridView) {
-                    GridView gridView = (GridView) mInnerScrollView;
-                    gridView.setSelection(0);
-                } else if (mInnerScrollView instanceof WebView) {
-                    WebView webview = (WebView) mInnerScrollView;
-                    webview.scrollTo(0, 0);
-                } else if (mInnerScrollView instanceof ScrollView) {
-                    ScrollView scrollview = (ScrollView) mInnerScrollView;
-                    scrollview.smoothScrollTo(0, 0);
-                }
-            }
-        }
-
-    }
-
 }

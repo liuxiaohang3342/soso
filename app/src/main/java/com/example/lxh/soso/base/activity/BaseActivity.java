@@ -36,7 +36,7 @@ public class BaseActivity extends FragmentActivity {
         FrameLayout contentontainer = (FrameLayout) findViewById(R.id.app_content_container);
         if (setContentViewVisible()) {
             View contentView = setContentView(layoutInflater, contentontainer);
-            if(contentView != null){
+            if (contentView != null) {
                 contentontainer.addView(contentView);
             }
         } else {
@@ -46,7 +46,7 @@ public class BaseActivity extends FragmentActivity {
         FrameLayout bottomViewContainer = (FrameLayout) findViewById(R.id.app_bottom_view);
         if (setBottomViewVisible()) {
             View bottomView = setBottomView(layoutInflater, bottomViewContainer);
-            if(bottomView != null){
+            if (bottomView != null) {
                 bottomViewContainer.addView(bottomView);
             }
         } else {
