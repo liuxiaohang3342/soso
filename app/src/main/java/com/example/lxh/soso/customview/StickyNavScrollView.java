@@ -13,6 +13,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -24,7 +25,6 @@ import com.example.lxh.soso.R;
  * @ClassName: StickyNavScrollView
  * @Description: 此控件适合多个header和一个viewpager的格局。子控件frameLayoutHeader、pagerSlidingTabStrip
  * 、viewPager必须设置tag，设置的tag必须与values中tags.xml中对应。 此控件现在只对webview、pulltorefreshlistview、gridview 、scrollview做了兼容。
- * 为了兼容这些可滑动的view必须给fragment的根布局设置对应的tag，设置的tag必须与values中tags.xml中对应。
  * @date 2015-4-20 下午5:09:36
  */
 public class StickyNavScrollView extends ScrollView {
@@ -45,9 +45,9 @@ public class StickyNavScrollView extends ScrollView {
 
     private ViewGroup mInnerScrollView;
 
-
     public StickyNavScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setClipChildren(true);
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
@@ -81,7 +81,6 @@ public class StickyNavScrollView extends ScrollView {
         if (mPagerTabStrip != null) {
             height += mPagerTabStrip.getMeasuredHeight();
         }
-        Log.i("lxh","getMeasuredHeight()"+getMeasuredHeight());
         params.height = getMeasuredHeight() - height;
     }
 
@@ -99,8 +98,8 @@ public class StickyNavScrollView extends ScrollView {
                 getCurrentScrollView();
                 if (Math.abs(dy) > mTouchSlop && mInnerScrollView != null) {// 只拦截竖向的事件
                     isTopHidden = getScrollY() >= mTopViewHeight;
-                    if (mInnerScrollView instanceof ListView) {
-                        ListView lv = (ListView) mInnerScrollView;
+                    if (mInnerScrollView instanceof AbsListView) {
+                        AbsListView lv = (AbsListView) mInnerScrollView;
                         View c = lv.getChildAt(0);
                         if (!isTopHidden || (lv != null && c != null && lv.getTop() == c.getTop() && isTopHidden && dy > 0)
                                 || c == null && isTopHidden && dy > 0) {
@@ -108,26 +107,9 @@ public class StickyNavScrollView extends ScrollView {
                         } else {
                             return false;
                         }
-                    } else if (mInnerScrollView instanceof WebView) {
+                    } else {
                         WebView webview = (WebView) mInnerScrollView;
                         if (!isTopHidden || (webview.getScrollY() == 0 && isTopHidden && dy > 0)) {
-                            return super.onInterceptTouchEvent(ev);
-                        } else {
-                            return false;
-                        }
-                    } else if (mInnerScrollView instanceof GridView) {
-                        GridView gridView = (GridView) mInnerScrollView;
-                        View c = gridView.getChildAt(0);
-                        if (!isTopHidden || (c != null && 0 == c.getTop() && isTopHidden && dy > 0) || c == null && isTopHidden
-                                && dy > 0) {
-                            return super.onInterceptTouchEvent(ev);
-                        } else {
-                            return false;
-                        }
-
-                    } else if (mInnerScrollView instanceof ScrollView) {
-                        ScrollView scrollview = (ScrollView) mInnerScrollView;
-                        if (!isTopHidden || (scrollview.getScrollY() == 0 && isTopHidden && dy > 0)) {
                             return super.onInterceptTouchEvent(ev);
                         } else {
                             return false;
@@ -142,6 +124,15 @@ public class StickyNavScrollView extends ScrollView {
         return super.onInterceptTouchEvent(ev);
     }
 
+    /**
+     * 防止自动滚动
+     *
+     * @param child
+     * @param focused
+     */
+    @Override
+    public void requestChildFocus(View child, View focused) {
+    }
 
     public void getCurrentScrollView() {
         int currentItem = mViewPager.getCurrentItem();

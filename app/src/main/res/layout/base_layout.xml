@@ -15,7 +15,9 @@
         android:layout_height="0dp"
         android:layout_above="@+id/app_bottom_view"
         android:layout_below="@+id/app_title_bar"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true" />
 
     <FrameLayout
         android:id="@+id/app_bottom_view"

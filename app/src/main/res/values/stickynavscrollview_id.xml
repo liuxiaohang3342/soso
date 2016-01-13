@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="sticknav_headerview_id" type="id" />
+    <item name="sticknav_pagertab_id" type="id" />
+    <item name="sticknav_viewpager_id" type="id" />
+</resources>

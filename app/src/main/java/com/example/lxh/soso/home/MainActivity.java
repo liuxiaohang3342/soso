@@ -31,6 +31,10 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         findViewById(R.id.home_list).setOnClickListener(this);
         findViewById(R.id.home_scroll).setOnClickListener(this);
         findViewById(R.id.home_personal).setOnClickListener(this);
+        if (mPersonalFragment == null) {
+            mPersonalFragment = PersonalFragment.newInstance();
+        }
+        addFragment(R.id.app_content_container, mPersonalFragment, PersonalFragment.class.getName(), false);
     }
 
     @Override

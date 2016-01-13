@@ -12,7 +12,7 @@ public class BaseFragmentActivity extends BaseActivity {
 
     /**
      * 添加fragment,如果fragment存在就show出来
-     * <p/>
+     * <p>
      *
      * @param fragment
      * @param tag
@@ -34,7 +34,7 @@ public class BaseFragmentActivity extends BaseActivity {
 
     /**
      * 根据resId替换成fragment
-     * <p/>
+     * <p>
      *
      * @param fragment
      * @param tag

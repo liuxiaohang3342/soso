@@ -60,6 +60,7 @@ public class PersonalFragment extends BaseFragment {
                 return mTitles.get(position);
             }
         });
+        viewPager.setCurrentItem(0);
         slidingTabStrip.setViewPager(viewPager);
     }
 
@@ -70,9 +71,9 @@ public class PersonalFragment extends BaseFragment {
         mTitles.add("主页");
         mTitles.add("主页");
         mFragments = new ArrayList<Fragment>();
-        mFragments.add(MainFragment.newInstance());
-        mFragments.add(MainFragment.newInstance());
-        mFragments.add(MainFragment.newInstance());
-        mFragments.add(MainFragment.newInstance());
+        mFragments.add(ListViewFragment.newInstance());
+        mFragments.add(ListViewFragment.newInstance());
+        mFragments.add(ListViewFragment.newInstance());
+        mFragments.add(ListViewFragment.newInstance());
     }
 }
