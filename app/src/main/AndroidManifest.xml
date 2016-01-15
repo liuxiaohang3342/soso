@@ -16,7 +16,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.lxh.soso.scroll.ScrollViewActivity"
+            android:name=".stickylayout.StickyNavLayoutActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name="com.example.lxh.soso.stickylayout.RotateViewActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name="com.example.lxh.soso.stickylayout.StickyScrollViewActivity"
             android:label="@string/app_name"></activity>
     </application>
 

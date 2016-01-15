@@ -1,7 +1,6 @@
 package com.example.lxh.soso.home;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.example.lxh.soso.R;
 import com.example.lxh.soso.base.fragment.BaseFragment;
-import com.example.lxh.soso.customview.RotateView;
-
-import java.util.ArrayList;
+import com.example.lxh.soso.stickylayout.RotateViewActivity;
+import com.example.lxh.soso.stickylayout.StickyNavLayoutActivity;
+import com.example.lxh.soso.stickylayout.StickyScrollViewActivity;
 
 /**
  * Created by lxh on 2016/1/6.
  */
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     public static MainFragment newInstance() {
         MainFragment mainFragment = new MainFragment();
@@ -25,24 +24,37 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.main_fragment_view, container, false);
+        return inflater.inflate(R.layout.main_fragment_layout, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RotateView rotateView = (RotateView) view.findViewById(R.id.rotate_view);
-        rotateView.setData(initDatas());
-        rotateView.start();
+        view.findViewById(R.id.tv_rotate_view).setOnClickListener(this);
+        view.findViewById(R.id.tv_stick_scroll).setOnClickListener(this);
+        view.findViewById(R.id.tv_stick_nav_layout).setOnClickListener(this);
+        view.findViewById(R.id.tv_3d_viewpager).setOnClickListener(this);
     }
 
-    private ArrayList<Bitmap> initDatas() {
-        ArrayList<Bitmap> bitmaps = new ArrayList<Bitmap>();
-        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.loading_01));
-        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.loading_02));
-        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.loading_03));
-        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.loading_04));
-        bitmaps.add(BitmapFactory.decodeResource(getResources(), R.drawable.loading_05));
-        return bitmaps;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_rotate_view:
+                openActivity(RotateViewActivity.class);
+                break;
+            case R.id.tv_stick_nav_layout:
+                openActivity(StickyNavLayoutActivity.class);
+                break;
+            case R.id.tv_stick_scroll:
+                openActivity(StickyScrollViewActivity.class);
+                break;
+            case R.id.tv_3d_viewpager:
+                break;
+        }
+    }
+
+    private void openActivity(Class clazz) {
+        Intent intent = new Intent(getContext(), clazz);
+        startActivity(intent);
     }
 }
