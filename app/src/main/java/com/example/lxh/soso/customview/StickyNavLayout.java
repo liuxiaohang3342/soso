@@ -47,6 +47,8 @@ public class StickyNavLayout extends LinearLayout {
     private float mMaxScale;
     private int mMaxHeaderViewHeight;
 
+    private int mActivePointerId = -1;
+
     public StickyNavLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScroller = new OverScroller(context);
@@ -99,20 +101,24 @@ public class StickyNavLayout extends LinearLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
-        float y = ev.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mLastY = y;
+                mLastY = ev.getY();
                 mMaxScale = (getMeasuredHeight() / mTopViewHeight);
                 mLastScale = (mHeaderView.getBottom() / mTopViewHeight);
+                mActivePointerId = ev.getPointerId(0);
                 break;
             case MotionEvent.ACTION_MOVE:
-                float dy = y - mLastY;
-                if (Math.abs(dy) > mTouchSlop) {
-                    mDragging = true;
-                    if (mListener != null) {
-                        if (!isTopHidden || (mListener.isTop() && isTopHidden && dy > 0)) {
-                            return true;
+                int index = ev.findPointerIndex(mActivePointerId);
+                if (index != -1) {
+                    float y = ev.getY(index);
+                    float dy = y - mLastY;
+                    if (Math.abs(dy) > mTouchSlop) {
+                        mDragging = true;
+                        if (mListener != null) {
+                            if (!isTopHidden || (mListener.isTop() && isTopHidden && dy > 0)) {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -125,7 +131,6 @@ public class StickyNavLayout extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mVelocityTracker.addMovement(event);
         int action = event.getAction();
-        float y = event.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 if (!mScroller.isFinished()) {
@@ -133,30 +138,37 @@ public class StickyNavLayout extends LinearLayout {
                 }
                 mVelocityTracker.clear();
                 mVelocityTracker.addMovement(event);
-                mLastY = y;
+                mActivePointerId = event.getPointerId(0);
+                mLastY = event.getY();
                 return true;
             case MotionEvent.ACTION_MOVE:
-                float dy = y - mLastY;
-                if (!mDragging && Math.abs(dy) > mTouchSlop) {
-                    mDragging = true;
-                }
-                if (mDragging) {
-                    scrollBy(0, (int) -dy);
-                    if (mHeaderView.getBottom() >= mTopViewHeight) {
-                        ViewGroup.LayoutParams localLayoutParams = mHeaderView.getLayoutParams();
-                        float f = ((dy + mHeaderView.getBottom()) / mTopViewHeight - this.mLastScale) / 2.0F + mLastScale;
-                        if ((mLastScale <= 1.0f) && (f < mLastScale)) {
-                            localLayoutParams.height = mTopViewHeight;
-                            mHeaderView.setLayoutParams(localLayoutParams);
-                            return super.onTouchEvent(event);
-                        }
-                        mLastScale = Math.min(Math.max(f, 1.0F), mMaxScale);
-                        localLayoutParams.height = ((int) (mTopViewHeight * mLastScale));
-                        if (localLayoutParams.height < getMeasuredHeight() && localLayoutParams.height < mMaxHeaderViewHeight)
-                            mHeaderView.setLayoutParams(localLayoutParams);
+                int index = event.findPointerIndex(mActivePointerId);
+                if (index != -1) {
+                    float y = event.getY(index);
+                    float dy = y - mLastY;
+                    if (!mDragging && Math.abs(dy) > mTouchSlop) {
+                        mDragging = true;
                     }
-                    mLastY = y;
-                    return super.onTouchEvent(event);
+                    if (mDragging) {
+                        scrollBy(0, (int) -dy);
+                        if (mHeaderView.getBottom() >= mTopViewHeight) {
+                            ViewGroup.LayoutParams localLayoutParams = mHeaderView.getLayoutParams();
+                            float f = ((dy + mHeaderView.getBottom()) / mTopViewHeight - this.mLastScale) / 2.0F + mLastScale;
+                            if ((mLastScale <= 1.0f) && (f < mLastScale)) {
+                                localLayoutParams.height = mTopViewHeight;
+                                mHeaderView.setLayoutParams(localLayoutParams);
+                                return super.onTouchEvent(event);
+                            }
+                            mLastScale = Math.min(Math.max(f, 1.0F), mMaxScale);
+                            localLayoutParams.height = ((int) (mTopViewHeight * mLastScale));
+                            if (localLayoutParams.height > getMeasuredHeight() || localLayoutParams.height > mMaxHeaderViewHeight) {
+                                localLayoutParams.height = mMaxHeaderViewHeight;
+                            }
+                            mHeaderView.setLayoutParams(localLayoutParams);
+                        }
+                        mLastY = y;
+                        return super.onTouchEvent(event);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -166,19 +178,35 @@ public class StickyNavLayout extends LinearLayout {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                mDragging = false;
+                if (mDragging) {
+                    mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                    int velocityY = (int) mVelocityTracker.getYVelocity();
+                    if (Math.abs(velocityY) > mMinimumVelocity) {
+                        mScroller.fling(0, getScrollY(), 0, -velocityY, 0, 0, 0, mTopViewHeight);
+                        invalidate();
+                    }
+                    mVelocityTracker.clear();
+                }
                 reset();
                 post(mRunnable);
-                mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-                int velocityY = (int) mVelocityTracker.getYVelocity();
-                if (Math.abs(velocityY) > mMinimumVelocity) {
-                    mScroller.fling(0, getScrollY(), 0, -velocityY, 0, 0, 0, mTopViewHeight);
-                    invalidate();
-                }
-                mVelocityTracker.clear();
+                mDragging = false;
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                onSecondaryPointerUp(event);
+                mLastY = event.getY(event
+                        .findPointerIndex(mActivePointerId));
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    private void onSecondaryPointerUp(MotionEvent event) {
+        int i = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
+                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+        if (event.getPointerId(i) == this.mActivePointerId && i != 0)
+            mLastY = event.getY(0);
+            mActivePointerId = event.getPointerId(0);
+            return;
     }
 
     private Runnable mRunnable = new Runnable() {
