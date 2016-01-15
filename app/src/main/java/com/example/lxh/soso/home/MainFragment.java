@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 
 import com.example.lxh.soso.R;
 import com.example.lxh.soso.base.fragment.BaseFragment;
-import com.example.lxh.soso.stickylayout.RotateViewActivity;
+import com.example.lxh.soso.rotate.RotateViewActivity;
 import com.example.lxh.soso.stickylayout.StickyNavLayoutActivity;
 import com.example.lxh.soso.stickylayout.StickyScrollViewActivity;
+import com.example.lxh.soso.viewpager.HorizontalViewPagerActivity;
+import com.example.lxh.soso.viewpager.ViewPagerActivity;
 
 /**
  * Created by lxh on 2016/1/6.
@@ -34,6 +36,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.tv_stick_scroll).setOnClickListener(this);
         view.findViewById(R.id.tv_stick_nav_layout).setOnClickListener(this);
         view.findViewById(R.id.tv_3d_viewpager).setOnClickListener(this);
+        view.findViewById(R.id.tv_horizontal_viewpager).setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +52,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 openActivity(StickyScrollViewActivity.class);
                 break;
             case R.id.tv_3d_viewpager:
+                openActivity(ViewPagerActivity.class);
+                break;
+            case R.id.tv_horizontal_viewpager:
+                openActivity(HorizontalViewPagerActivity.class);
                 break;
         }
     }

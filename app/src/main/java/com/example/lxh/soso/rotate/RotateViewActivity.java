@@ -1,4 +1,4 @@
-package com.example.lxh.soso.stickylayout;
+package com.example.lxh.soso.rotate;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
