@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -74,6 +73,11 @@ public class HorizontalScrollViewPager extends HorizontalScrollView {
         };
     }
 
+    /**
+     * 设置数据
+     *
+     * @param childViews
+     */
     public void setData(List<View> childViews) {
         mChildViews = childViews;
         notifyDataChange();
@@ -124,9 +128,15 @@ public class HorizontalScrollViewPager extends HorizontalScrollView {
      */
     public void setTransformer(ViewPageTransformer transformer) {
         mTransformer = transformer;
-
     }
 
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        //重新layout之后需要初始化动画
+        onScrollChanged(l, t, 0, 0);
+    }
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
@@ -183,10 +193,8 @@ public class HorizontalScrollViewPager extends HorizontalScrollView {
                             mCurrentChildViewIndex = MAXCURRENTINDEX;
                         }
                     }
-                    int[] wh = new int[2];
-                    mContainer.getChildAt(mCurrentChildViewIndex).getLocationOnScreen(wh);
-                    int left = wh[0];
-                    mScroller.startScroll(getScrollX(), 0, left - mScreenWidth / 4, 0);
+                    int left = mContainer.getChildAt(mCurrentChildViewIndex).getLeft();
+                    mScroller.startScroll(getScrollX(), 0, left - mScreenWidth / 4 - getScrollX(), 0);
                     invalidate();
                 } else {//回滚到原来的位置
                     mScroller.startScroll(getScrollX(), 0, (int) scrollx, 0);
