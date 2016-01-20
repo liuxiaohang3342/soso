@@ -2,10 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     tools:context="com.example.lxh.soso.viewpager.HorizontalViewPagerActivity">
 
-    <com.example.lxh.soso.customview.HorizontalScrollViewPager
+    <com.example.lxh.soso.customview.HorizontalRankViewPager
         android:id="@+id/horizonal_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:clipChildren="true" />
 </RelativeLayout>
