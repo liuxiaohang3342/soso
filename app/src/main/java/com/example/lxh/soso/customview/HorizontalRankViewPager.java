@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Created by lxh on 2016/1/15.
  * <p/>
- * 人已经傻了了了，排序、删除的退出动画暂时没有好的思路
+ * 人已经傻了了了，排序暂时没有好的思路
  */
 public class HorizontalRankViewPager extends HorizontalScrollView implements View.OnLongClickListener {
 
@@ -233,7 +234,7 @@ public class HorizontalRankViewPager extends HorizontalScrollView implements Vie
             case MotionEvent.ACTION_UP:
                 if (mMoveView != null) {
                     if (Math.abs(mMoveView.getTranslationY()) > mItemWidth / 2) {
-                        removeMoveView(x - mLastX, y - mLastY);
+                        removeMoveView();
                     }
                     mMoveView = null;
                     return super.onTouchEvent(ev);
@@ -320,25 +321,26 @@ public class HorizontalRankViewPager extends HorizontalScrollView implements Vie
         return false;
     }
 
-    private void removeMoveView(float dx, float dy) {
-        mMoveView.startAnimation(getOutAnimation(mMoveView, dx, dy));
+    private void removeMoveView() {
+        mMoveView.startAnimation(getOutAnimation(mMoveView));
         mContainer.removeView(mMoveView);
         mChildViews.remove(mMoveView);
         reValuation();
         invalidate();
     }
 
-    private AnimationSet getOutAnimation(View view, float dx, float dy) {
-        float fromXDelta = dx / mItemWidth;
-        float toXDelta = (mScreenWidth - mItemWidth) / (2 * view.getLeft());
-
-        float fromYDelta = dy / view.getHeight();
-        float toYDelta = (view.getHeight() - mScreenWidth) / view.getHeight();
+    private AnimationSet getOutAnimation(View view) {
+        int[] screen = new int[2];
+        view.getLocationOnScreen(screen);
+        float toXDelta = mScreenWidth / 4 - screen[0];
+        float toYDelta = screen[1] + view.getHeight();
         AnimationSet animationSet = new AnimationSet(true);
-        TranslateAnimation translateAnimation = new TranslateAnimation(fromXDelta, 5f, fromYDelta, 5f);
-        animationSet.addAnimation(translateAnimation);
         ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0, 1, 0);
         animationSet.addAnimation(scaleAnimation);
+        TranslateAnimation translateAnimation = new TranslateAnimation(0, toXDelta, 0, -toYDelta);
+        animationSet.addAnimation(translateAnimation);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+        animationSet.addAnimation(alphaAnimation);
         animationSet.setDuration(500);
         return animationSet;
     }
