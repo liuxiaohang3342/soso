@@ -42,6 +42,10 @@
             android:name=".viewpager.HorizontalRankViewPagerActivity"
             android:label="@string/app_name"
             android:parentActivityName=".base.activity.BaseActivity"></activity>
+        <activity
+            android:name="com.example.lxh.soso.gridview.GridViewActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".base.activity.BaseActivity"></activity>
     </application>
 
 </manifest>

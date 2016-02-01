@@ -187,6 +187,7 @@ public class HorizontalRankViewPager extends HorizontalScrollView implements Vie
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+
         return true;
     }
 
@@ -208,11 +209,19 @@ public class HorizontalRankViewPager extends HorizontalScrollView implements Vie
                 if (mMoveView != null) {
                     float dx = x - mLastX;
                     float dy = y - mLastY;
-                    mMoveView.setTranslationX(mMoveView.getTranslationX() + dx);
-                    mMoveView.setTranslationY(mMoveView.getTranslationY() + dy);
                     mLastY = y;
                     mLastX = x;
-                    return true;
+                    int[] viewOnScreen = new int[2];
+                    mMoveView.getLocationOnScreen(viewOnScreen);
+                    if (viewOnScreen[0] == 0) {
+
+                    } else if (viewOnScreen[0] == 0) {
+
+                    } else {
+                        mMoveView.setTranslationX(mMoveView.getTranslationX() + dx);
+                        mMoveView.setTranslationY(mMoveView.getTranslationY() + dy);
+                        return true;
+                    }
                 }
                 float dx = x - mMoveStartX;
                 scrollx = x - mActionDownX;

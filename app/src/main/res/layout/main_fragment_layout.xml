@@ -52,4 +52,18 @@
         android:gravity="center"
         android:text="可排序的viewpager" />
 
+    <com.example.lxh.soso.customview.BarrageView
+        android:id="@+id/barrageview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#525252" />
+
+    <TextView
+        android:id="@+id/tv_gridview"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="网格view" />
+
 </LinearLayout>

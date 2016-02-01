@@ -19,4 +19,13 @@
         <attr name="pstsShouldExpand" format="boolean" />
         <attr name="pstsTextAllCaps" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="CustomGridView">
+        <attr name="column" format="integer" />
+        <attr name="itemHight" format="reference" />
+        <attr name="itemBackground" format="color" />
+        <attr name="itemSpace" format="reference" />
+        <attr name="itemTextSize" format="reference" />
+        <attr name="itemTextColor" format="color" />
+    </declare-styleable>
 </resources>
