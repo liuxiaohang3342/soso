@@ -2,6 +2,7 @@ package com.example.lxh.soso.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -19,21 +20,21 @@ public class CustomGridView extends LinearLayout {
 
     private Context mContext;
 
-    private int mColumn; //列数
+    private int mColumn = 1; //列数
 
     private int mItemHeight;
 
     private int mItemSpace;
 
-    private int mItemBackGround;
+    private int mItemBackGround = Color.TRANSPARENT;
 
     private int mItemWidth;
 
     private int mSurplusWidth;//除不尽的情况下剩余的像素点
 
-    private int mItemTextSize;
+    private int mItemTextSize = 16;
 
-    private int mItemTextColor;
+    private int mItemTextColor = Color.WHITE;
 
 
     public CustomGridView(Context context) {
