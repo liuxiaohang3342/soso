@@ -91,9 +91,9 @@ public class CustomGridView extends LinearLayout {
         int childCount = getChildCount();
         int height;
         if ((childCount + 1) % mColumn == 0) {
-            height = (childCount + 1) / mColumn * (mItemHeight + mItemSpace) - mItemSpace;
+            height = (childCount + 1) / mColumn * (mItemHeight + mItemSpace) - mItemSpace + getPaddingTop() + getPaddingBottom();
         } else {
-            height = ((childCount + 1) / mColumn + 1) * (mItemHeight + mItemSpace) - mItemSpace;
+            height = ((childCount + 1) / mColumn + 1) * (mItemHeight + mItemSpace) - mItemSpace + getPaddingTop() + getPaddingBottom();
         }
         int hightM = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, hightM); //高度需要重新测量，否则在listview等中显示不完全
@@ -122,7 +122,7 @@ public class CustomGridView extends LinearLayout {
             if (i >= mColumn) { //由于第一个view占据两个位置，第二行开始所有的index错位一
                 index++;
             }
-            int left = l + index % mColumn * (mItemSpace + mItemWidth);
+            int left = l + index % mColumn * (mItemSpace + mItemWidth) + getPaddingLeft();
             if (index % mColumn <= mSurplusWidth) { //需要考虑多余的像素点
                 left = left + index % mColumn;
             } else {
