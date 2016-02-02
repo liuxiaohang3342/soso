@@ -56,27 +56,60 @@ public class CustomGridView extends LinearLayout {
     }
 
     public void setData(ArrayList<String> data) {
+        if (getChildCount() > 0) { //走复用逻辑
+            handConverView(data);
+            return;
+        }
         addView(createMainView(data.get(0)));
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 1; i < data.size(); i++) {
             addView(createItemView(data.get(i)));
         }
     }
 
+    /**
+     * 在listview情况下，处理复用逻辑
+     *
+     * @param data
+     */
+    private void handConverView(ArrayList<String> data) {
+        int childCount = getChildCount();
+        int size = data.size();
+        if (childCount > size) { //复用时候已有的view较多需要删除一部分
+            for (int i = size; i < childCount; i++) {
+                removeViewAt(i);
+            }
+        } else {//复用时候已有的view较少需要添加一部分
+            for (int i = childCount; i < size; i++) {
+                addView(createItemView(data.get(i)));
+            }
+        }
+
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int childCount = getChildCount();
+        int height;
+        if ((childCount + 1) % mColumn == 0) {
+            height = (childCount + 1) / mColumn * (mItemHeight + mItemSpace) - mItemSpace;
+        } else {
+            height = ((childCount + 1) / mColumn + 1) * (mItemHeight + mItemSpace) - mItemSpace;
+        }
+        int hightM = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, hightM); //高度需要重新测量，否则在listview等中显示不完全
+
         int width = getMeasuredWidth() - getPaddingLeft() - getPaddingRight() - (mColumn - 1) * mItemSpace;
         mItemWidth = width / mColumn;
         mSurplusWidth = width % mColumn;
-        int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             int hight = mItemHeight;
             if (i == 0) {
                 hight = mItemHeight * 2 + mItemSpace;
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mItemWidth, hight);
-            childView.setLayoutParams(params);
+            int wMeasureSpec = MeasureSpec.makeMeasureSpec(mItemWidth, MeasureSpec.EXACTLY);
+            int hMeasureSpec = MeasureSpec.makeMeasureSpec(hight, MeasureSpec.EXACTLY);
+            childView.measure(wMeasureSpec, hMeasureSpec);
         }
     }
 
