@@ -1,4 +1,4 @@
-package com.example.lxh.soso;
+package com.example.lxh.soso.customview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

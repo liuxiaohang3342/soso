@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_rotate_view"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="loading动画" />
+
+    <TextView
+        android:id="@+id/tv_stick_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="悬停viewpager" />
+
+    <TextView
+        android:id="@+id/tv_stick_nav_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="头部可伸缩的悬停viewpager" />
+
+    <TextView
+        android:id="@+id/tv_3d_viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="动画viewPager" />
+
+    <TextView
+        android:id="@+id/tv_horizontal_viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Gallery效果" />
+
+    <TextView
+        android:id="@+id/tv_horizontal_rankviewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="可排序的viewpager" />
+
+    <com.example.lxh.soso.customview.BarrageView
+        android:id="@+id/barrageview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#525252" />
+
+    <TextView
+        android:id="@+id/tv_gridview"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="网格view" />
+
+</LinearLayout>
